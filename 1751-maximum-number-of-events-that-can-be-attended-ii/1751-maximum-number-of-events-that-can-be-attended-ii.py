@@ -1,32 +1,27 @@
 class Solution:
     def maxValue(self, events: List[List[int]], k: int) -> int:
-        memo = {}
-        events.sort()
-        def findNext(currentIndex):
-            low = currentIndex + 1
-            high = len(events)
-            target = events[currentIndex][1]
+        events = sorted(events, key = lambda x: x[1])
+        n = len(events)
+        events_start_sorted = sorted([(e[0],i) for i, e in enumerate(events)])
+        preceding = [-1] * n
+        j = 0
 
-            while low < high:
-                mid = (low + high) // 2
-                if events[mid][0] <= target:
-                    low = mid + 1
-                else:
-                    high = mid
-            return low
-        def dfs(i, remaining):
-            if i == len(events) or remaining == 0:
-                return 0
-            if (i, remaining) in memo:
-                return memo[(i, remaining)]
-            
-            # skip current event
-            skip = dfs(i + 1, remaining)
-            
-            # take current event
-            j = findNext(i)  # binary search for next non-overlapping event
-            take = events[i][2] + dfs(j, remaining - 1)
-            
-            memo[(i, remaining)] = max(take, skip)
-            return memo[(i, remaining)]
-        return dfs(0,k)
+        for start, index in events_start_sorted:
+            while events[j][1] < start:
+                j += 1
+            preceding[index] = j - 1
+        
+        dp, res = [0] * n, 0
+        for j in range(1, k + 1):
+            max_value = -1
+            dp_next = [-1] * n
+            for i in range(n):
+                if j == 1:
+                    max_value = max(max_value, events[i][2])
+                elif preceding[i] >= 0 and dp[preceding[i]] >= 0:
+                    max_value = max(max_value, dp[preceding[i]] + events[i][2])
+                dp_next[i] = max_value
+            dp= dp_next
+            res = max(res, max_value)
+        return res
+        
