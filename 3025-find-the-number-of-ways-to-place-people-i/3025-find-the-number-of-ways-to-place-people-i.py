@@ -7,34 +7,20 @@ class Solution:
             # no points in the line or rectangle they make
         
 
-         # naive n^3 approach
-        ans = 0
+        # n^2 approach with sorting
+        points.sort(key = lambda x: (x[0], -x[1]))
+        pair_count = 0
         n = len(points)
 
         for i in range(n):
-            A = points[i]
-            for j in range(n):
-                B = points[j]
-                if i == j or not (A[0] <= B[0] and A[1]>= B[1]):
-                    continue
-                
-                if n == 2:
-                    ans += 1
-                    continue
-                illegal = False
-                for k in range(n):
-                    if k == i or k == j:
-                        continue
-                    
-                    temp = points[k]
-                    isX = (temp[0]>= A[0] and temp[0]<= B[0])
-                    isY = (temp[1]<=A[1] and temp[1]>=B[1])
-
-                    if isX and isY:
-                        illegal = True
+            upper_y = points[i][1]
+            lower_y = float('-inf')
+            for j in range(i+1, n):
+                curr_y = points[j][1]
+                if curr_y <= upper_y and curr_y > lower_y:
+                    pair_count += 1
+                    lower_y = curr_y
+                    if curr_y == upper_y:
                         break
-                if not illegal:
-                    ans += 1
-        return ans
-
+        return pair_count
 
