@@ -6,11 +6,10 @@ class Solution:
         # if you find complement in hashmap and the value of it in hashmap is not current index, then u got the pair
         hashmap = {}
         for i in range(len(nums)):
-            hashmap[nums[i]] = i
-        for i in range(len(nums)):
             complement = target - nums[i]
             if complement in hashmap and hashmap[complement]!= i:
                 return [i, hashmap[complement]]
+            hashmap[nums[i]] = i
             
         return []
 
