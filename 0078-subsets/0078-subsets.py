@@ -4,11 +4,13 @@ class Solution:
         output = []
         curr = []
         def backtrack(index):
-            output.append(curr[:])
-            for i in range(index, len(nums)):
-                curr.append(nums[i])
-                backtrack(i+1)
-                curr.pop()
+            if index == len(nums):
+                output.append(curr[:])
+                return
+            curr.append(nums[index])
+            backtrack(index+1)
+            curr.pop()
+            backtrack(index+1)
         backtrack(0)
         return output
 
