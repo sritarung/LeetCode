@@ -1,15 +1,13 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        result = []
-        subset = []
-        def dfs(i):
-            if i == len(nums):
-                result.append(subset[:])
-                return 
-            subset.append(nums[i])
-            dfs(i+1)
-            subset.pop()
-            dfs(i+1)
-        dfs(0)
-        return result
-
+        # cascading
+        output = [[]]
+        for num in nums:
+            newSubsets = []
+            for curr in output:
+                temp = curr.copy()
+                temp.append(num)
+                newSubsets.append(temp)
+            for curr in newSubsets:
+                output.append(curr)
+        return output
