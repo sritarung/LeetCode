@@ -1,29 +1,42 @@
 class Solution:
     def spellchecker(self, wordlist: List[str], queries: List[str]) -> List[str]:
         def devowel(word):
-            return "".join('*' if c in 'aeiou' else c
-                           for c in word)
+            ans = []
+            for c in word:
+                if c in 'aeiou':
+                    ans += "*"
+                else:
+                    ans += c
+            return "".join(ans)
+        
+        cap = {}
+        vowel = {}
+        normal = set(wordlist)
+        for w in wordlist:
+            word_low = w.lower()
+            cap.setdefault(word_low, w)
+            vowel.setdefault(devowel(word_low), w)
 
-        words_perfect = set(wordlist)
-        words_cap = {}
-        words_vow = {}
 
-        for word in wordlist:
-            wordlow = word.lower()
-            words_cap.setdefault(wordlow, word)
-            words_vow.setdefault(devowel(wordlow), word)
+        output = []
+        for q in queries:
+            if q in normal:
+                output.append(q)
+                continue
+            
+            qLow = q.lower()
+            if qLow in cap:
+                output.append(cap[qLow])
+                continue
 
-        def solve(query):
-            if query in words_perfect:
-                return query
+            qVowel = devowel(qLow)
+            if qVowel in vowel:
+                output.append(vowel[qVowel])
+                continue
+            output.append("")
+            
+        return output
 
-            queryL = query.lower()
-            if queryL in words_cap:
-                return words_cap[queryL]
+            
 
-            queryLV = devowel(queryL)
-            if queryLV in words_vow:
-                return words_vow[queryLV]
-            return ""
 
-        return list(map(solve, queries))
