@@ -7,7 +7,7 @@ class Solution:
             if nums[r] == 1:
                 max_ones = max(max_ones, r - l + 1)
                 continue
-            if count >= 1:
+            if count > 0:
                 count -= 1
                 max_ones = max(max_ones, r - l + 1)
                 continue
