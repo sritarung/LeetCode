@@ -1,13 +1,14 @@
+from sortedcontainers import SortedList
 class MyCalendar:
 
     def __init__(self):
-        self.calendar = []
+        self.calendar = SortedList()
 
     def book(self, startTime: int, endTime: int) -> bool:
-        for s, e in self.calendar:
-            if s < endTime and startTime < e:
-                return False
-        self.calendar.append((startTime, endTime))
+        idx = self.calendar.bisect_right((startTime, endTime))
+        if (idx > 0 and self.calendar[idx-1][1] > startTime) or (idx < len(self.calendar) and self.calendar[idx][0] < endTime):
+            return False
+        self.calendar.add((startTime, endTime))
         return True
 
 
