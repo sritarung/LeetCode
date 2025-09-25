@@ -1,22 +1,11 @@
 class Solution:
     def minimumTotal(self, triangle: List[List[int]]) -> int:
-        # two choices
-        # move to i or i + 1 index
-        self.answer = float('inf')
-        memo = {}
-
-        def backtrack(i, j, ans):
-            if i == len(triangle):
-                self.answer = min(self.answer, ans)
-                return
-
-            # prune if we already reached (i,j) with a better sum
-            if (i, j) in memo and ans >= memo[(i, j)]:
-                return
-            memo[(i, j)] = ans
-
-            backtrack(i+1, j, ans + triangle[i][j])
-            backtrack(i+1, j+1, ans + triangle[i][j])
-
-        backtrack(0, 0, 0)
-        return self.answer
+        for row in range(1, len(triangle)):
+            for col in range(row + 1):
+                smallest_above = math.inf
+                if col > 0:
+                    smallest_above = triangle[row - 1][col - 1]
+                if col < row:
+                    smallest_above = min(smallest_above, triangle[row - 1][col])
+                triangle[row][col] += smallest_above
+        return min(triangle[-1])
