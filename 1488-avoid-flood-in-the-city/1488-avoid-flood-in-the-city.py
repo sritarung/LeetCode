@@ -7,7 +7,7 @@ class Solution:
         l, r = 0, len(arr)
         while l < r:
             mid = l + (r-l)//2
-            if mid < len(arr) and arr[mid] <= target:
+            if arr[mid] <= target:
                 l = mid + 1
             else:
                 r = mid
