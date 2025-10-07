@@ -6,7 +6,7 @@ class Solution:
         # returns first index i where arr[i] > target
         l, r = 0, len(arr)
         while l < r:
-            mid = (l + r) // 2
+            mid = l + (r-l)//2
             if mid < len(arr) and arr[mid] <= target:
                 l = mid + 1
             else:
