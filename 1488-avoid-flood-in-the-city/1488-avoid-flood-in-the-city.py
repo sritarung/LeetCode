@@ -3,27 +3,32 @@ from typing import List
 
 class Solution:
     def avoidFlood(self, rains: List[int]) -> List[int]:
+        
+       
+       # store list of index of dry days 
+       # bisect_right to find the (index)day after the last flood, where u need to drain the river
+       # need a lake dictionary to get the last time it was full
+       # change ans[idx] to the value of this lake
         n = len(rains)
-        ans = [-1] * n              # -1 on rain days; on dry days we'll set which lake to dry
-        last = {}                   # lake -> last day it rained (lake is full since that day)
-        dry_days = []               # sorted list of indices of days where rains[i] == 0
-
-        for i, lake in enumerate(rains):
-            if lake > 0:
-                # It's raining on `lake`
-                if lake in last:
-                    # We must dry `lake` on some dry day after last[lake] and before today (i)
-                    j = bisect_right(dry_days, last[lake])  # first dry day index > last[lake]
+        last = {}
+        dry_days = []
+        ans = [-1] * n
+        for i, r in enumerate(rains):
+            if r > 0:
+                if r in last:
+                    j = bisect_right(dry_days, last[r])
                     if j == len(dry_days):
-                        return []  # no available dry day to prevent flood
-                    dry_day_idx = dry_days.pop(j)           # use that dry day
-                    ans[dry_day_idx] = lake                 # dry this specific lake on that day
-                # Mark that lake just got filled today
-                last[lake] = i
-                ans[i] = -1
+                        return []
+                    
+                    dry_day_idx = dry_days.pop(j)
+                    ans[dry_day_idx] = r
+                last[r] = i
+                
             else:
-                # It's a dry day; record its index for later assignment
                 dry_days.append(i)
-                ans[i] = 1  # placeholder; if unused, drying any lake (1) is fine
-
+                ans[i] = 1
         return ans
+
+    
+
+
