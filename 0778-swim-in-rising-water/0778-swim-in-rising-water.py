@@ -1,28 +1,18 @@
 class Solution:
     def swimInWater(self, grid: List[List[int]]) -> int:
-        # lenght of grid
         N = len(grid)
-        # to keep track of visited nodes(squares)
+        M = len(grid[0])
+        minHeap = [(grid[0][0], 0, 0)]
         visited = set()
-        # priority queue to get the next least time to go to bottom right square
-        minH = [[grid[0][0], 0, 0]]
-        # the other directionally adj squares to go 
-        directions= [[0,1], [1,0], [0, -1], [-1, 0]]
-
-        visited.add((0,0))# add source to visited
-
-        while minH:
-            t, r, c = heapq.heappop(minH)
-            if r == N-1 and c==N-1:
+        directions = [(0,1), (1,0),(-1,0),(0,-1)]
+        visited.add((0,0))
+        while minHeap:
+            t, r, c = heapq.heappop(minHeap)
+            if r == N-1 and c == M-1:
                 return t
-            
             for dr, dc in directions:
-                newr, newc = r + dr, c + dc
-
-                if (newr < 0 or newc < 0 or newr==N or newc == N or (newr, newc) in visited):
+                nr, nc = r + dr, c + dc
+                if (nr,nc) in visited or nr < 0 or nr >= N or nc < 0 or nc >= M:
                     continue
-                visited.add((newr, newc))
-                heapq.heappush(minH, [max(t, grid[newr][newc]), newr, newc])
-
-
-
+                visited.add((nr,nc))
+                heapq.heappush(minHeap, (max(t,grid[nr][nc]), nr, nc))
