@@ -12,6 +12,5 @@ class Solution:
             increase[i] = count
             if count >= k and i-k >= 0 and increase[i-k] >= k:
                 return True
-        print(increase)
         return False
 
