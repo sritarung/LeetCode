@@ -12,4 +12,3 @@ class Solution:
                 zeroes -= 1
                 if i + zeroes < n:
                     arr[i+zeroes] = 0
-
