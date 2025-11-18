@@ -5,10 +5,12 @@ class Solution:
         """
         zeroes = arr.count(0)
         n = len(arr)
-        for i in range(n-1, -1, -1):
+        for i in range(len(arr)-1, -1, -1):
             if i + zeroes < n:
                 arr[i+zeroes] = arr[i]
             if arr[i] == 0:
                 zeroes -= 1
                 if i + zeroes < n:
-                    arr[i+zeroes] = 0
+                    arr[i + zeroes] = 0
+
+
