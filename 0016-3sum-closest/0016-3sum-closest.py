@@ -1,13 +1,13 @@
 class Solution:
-    def bisectRight(self, nums, target, idx):
-        lo = idx
+    def bisect_right(self, nums, target, start):
+        lo = start
         hi = len(nums)
         while lo < hi:
             mid = lo + (hi - lo)//2
-            if nums[mid] > target:
-                hi = mid 
-            else:
+            if nums[mid] < target:
                 lo = mid + 1
+            else:
+                hi = mid
         return lo
     def threeSumClosest(self, nums: List[int], target: int) -> int:
         diff = float('inf')
@@ -15,8 +15,8 @@ class Solution:
         for i in range(len(nums)):
             for j in range(i+1, len(nums)):
                 complement = target - nums[i] - nums[j]
-                hi = self.bisectRight(nums, complement, j+1)
-                lo = hi -1
+                hi = self.bisect_right(nums, complement, j+1)
+                lo = hi - 1
                 if hi < len(nums) and abs(diff) > abs(complement - nums[hi]):
                     diff = complement - nums[hi]
                 if lo > j and abs(diff) > abs(complement - nums[lo]):
@@ -24,3 +24,4 @@ class Solution:
             if diff == 0:
                 break
         return target - diff
+
